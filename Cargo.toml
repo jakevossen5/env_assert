@@ -3,7 +3,14 @@ name = "env_assert"
 version = "0.1.0"
 authors = ["Jake Vossen <jake@vossen.dev>"]
 edition = "2018"
-
+description = "A Rust library to assert when an environmental variable is set"
+readme = "README.md"
+homepage = "https://github.com/jakevossen5/env_assert/"
+repository = "https://github.com/jakevossen5/env_assert/"
+license = "MIT"
+license-file = "LICENSE"
+keywords = ["assert", "testing"]
+categories = ["development-tools::debugging", "development-tools", ]
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
