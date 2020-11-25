@@ -2,7 +2,7 @@
 //!
 //! For example:
 //!
-//! ```rust
+//! ```no_run
 //! use env_assert::env_assert;
 //! fn main() {
 //!     let res = expensive_func_that_should_return_positive();
@@ -49,26 +49,70 @@ macro_rules! env_assert {
         }
     }};
     ($cond:expr,) => {{
-        match env::var(KEY) {
-            Ok("true") => if v == "true" {
+        const KEY: &'static str = "RUST_ENV_ASSERT";
+        match std::env::var(KEY) {
+            Ok(v) => if v == "true" {
                 assert!($cond)
             }
+            _ => ()
         }
     }};
     ($cond:expr, $($arg:tt)+) => {{
-        match env::var(KEY) {
-            Ok("true") = if v == "true" {
+        const KEY: &'static str = "RUST_ENV_ASSERT";
+        match std::env::var(KEY) {
+            Ok(v) => if v == "true" {
                 let s = format!($($arg)+);
-                assert!($cond, s)            }
+                assert!($cond, s)
+            }
+            _ => ()
         }
 
     }};
 }
 
+// Note, tests should be run with the environmental variable set, aka RUST_ENV_ASSERT=true cargo test
 #[cfg(test)]
 mod tests {
+    const KEY: &'static str = "RUST_ENV_ASSERT";
+
+    fn set_var_to_true() {
+        std::env::set_var(KEY, "true");
+    }
+
+    fn remove_var() {
+        std::env::remove_var(KEY);
+    }
+
     #[test]
-    fn it_works() {
+    fn just_true() {
+        set_var_to_true();
         super::env_assert!(true);
+    }
+
+    #[test]
+    fn true_with_comma() {
+        set_var_to_true();
+        super::env_assert!(true,);
+    }
+
+    #[test]
+    fn true_with_fmt() {
+        set_var_to_true();
+        super::env_assert!(true, "didn't crash with {}", 5);
+    }
+
+    #[test]
+    #[should_panic(expected = "false assert is panic")]
+    fn test_panic_var_true() {
+        set_var_to_true();
+        super::env_assert!(false, "false assert is panic");
+    }
+
+    #[test]
+    fn assert_when_var_is_not_set() {
+        remove_var();
+        assert!(std::env::var(KEY).is_err());
+        super::env_assert!(true, "asserting with true");
+        super::env_assert!(false, "asserting with false");
     }
 }
