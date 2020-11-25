@@ -1,5 +1,8 @@
 # env_assert
 
+- [crates.io link](https://crates.io/crates/env_assert)
+- [docs.rs link](https://docs.rs/env_assert/)
+
 `env_assert` is a incredibly simple Rust library that allows you to only run an `assert!` when an the `RUST_ENV_ASSERT` environmental variable is set to `true`.
 
 For example:
