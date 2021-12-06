@@ -5,15 +5,11 @@
 //! ```no_run
 //! use env_assert::env_assert;
 //! fn main() {
-//!     let res = expensive_func_that_should_return_positive();
-//!     env_assert!(res.is_positive()); // "sanity check"
-//!
+//!     env_assert!(expensive_func_that_should_return_positive() > 0); // "sanity check"
 //!     println!("We got here because the environmental variable was not set!");
 //! }
-//!
 //! fn expensive_func_that_should_return_positive() -> i8 {
 //!     // do some really hard things here
-//!
 //!     // oh no! our expensive function messed up and is going to return a negative value
 //!     -42
 //! }
@@ -28,7 +24,7 @@
 //!
 //! ```text
 //! $ RUST_ENV_ASSERT=true cargo run
-//! thread 'main' panicked at 'assertion failed: res.is_positive()', src/main.rs:4:5
+//! thread 'main' panicked at 'assertion failed: expensive_func_that_should_return_positive() > 0', src/main.rs:3:5
 //! ```
 //!
 //! ## What problem does this solve?
