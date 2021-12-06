@@ -37,6 +37,10 @@
 //! However, some of those asserts are in a sense debug asserts, and I would rather the program continue than crash when it is deployed.
 //! This library lets you have asserts while in release mode, without negatively impacting performance for end users.
 //!
+//! ## Should I use this?
+//!
+//! Eh, probably not.
+//! This crate is good for simple testing and pet projects, but if this behavior is desired you should probably now use a [Cargo profile](https://doc.rust-lang.org/cargo/reference/profiles.html) to enable `debug_assert!()` and optimizations at the same time.
 #[macro_export]
 macro_rules! env_assert {
     ($cond:expr) => {{
